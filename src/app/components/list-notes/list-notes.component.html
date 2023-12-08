@@ -1,0 +1,20 @@
+ <div>
+   <div style="margin-left: 10rem">
+     <button pButton label="Добавить заметку" (click)="addNote()"></button>
+   </div>
+  <div style="text-align: center" *ngFor="let note of notes;trackBy: trackByNotes">
+    <div style="margin-top: 1rem">
+      <p-card class="card" (click)="onSelectNote(note)">
+        <ng-template pTemplate="body">
+          <div style="display: flex; justify-content: center; align-items: center; gap: 1rem">
+            <i class="pi pi-id-card"></i>
+          <h3 [style.color]="note.id === selectNote?.value?.id ? '#1185ab': '#495057'" >
+            {{note.name}}
+          </h3>
+            <button pButton class="p-button-danger" icon="pi pi-trash" (click)="removeNote(note.id)"></button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+ </div>

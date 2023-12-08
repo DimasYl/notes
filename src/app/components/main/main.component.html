@@ -1,0 +1,8 @@
+<p-card>
+  <ng-template pTemplate="body">
+    <div class="main">
+      <app-list-notes style="width: 30%;" [notes]="notes | async"></app-list-notes>
+      <app-description-note style="width: 70%;"></app-description-note>
+    </div>
+  </ng-template>
+</p-card>
