@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input} from '@angular/core';
 import {Note} from "../../../data/notes.type";
 import {SELECT_NOTE} from "../../services/injectors";
 import {BehaviorSubject} from "rxjs";
@@ -28,7 +28,10 @@ export class ListNotesComponent {
   @Input()
   public notes!: Note[] | null;
 
-  constructor(@Inject(SELECT_NOTE) public selectNote: BehaviorSubject<Note | null>, private readonly dialog: DialogService) { }
+  constructor(@Inject(SELECT_NOTE) public selectNote: BehaviorSubject<Note | null>,
+              private readonly dialog: DialogService,
+              private cdRef: ChangeDetectorRef
+              ) { }
 
   public trackByNotes(index: number, note: Note): number {
     return note?.id;
@@ -48,6 +51,10 @@ export class ListNotesComponent {
       data: {
         notes: this.notes,
       }
+    }).onClose.subscribe(name => {
+      const newNote: Note = {id: 1, name, description: 'Пусто'}
+      this.notes = [newNote, ...(this.notes as Note[])]
+      this.cdRef.detectChanges()
     })
   }
 
