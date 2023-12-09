@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input} from '@angular/core';
 import {Note} from "../../../data/notes.type";
 import {SELECT_NOTE} from "../../services/injectors";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, filter} from "rxjs";
 import {DialogService} from "primeng/dynamicdialog";
 import {AddNoteComponent} from "../modal/add-note.component";
 
@@ -51,7 +51,9 @@ export class ListNotesComponent {
       data: {
         notes: this.notes,
       }
-    }).onClose.subscribe(name => {
+    }).onClose.pipe(
+      filter(res => !!res),
+    ).subscribe(name => {
       const newNote: Note = {id: 1, name, description: 'Пусто'}
       this.notes = [newNote, ...(this.notes as Note[])]
       this.cdRef.detectChanges()
